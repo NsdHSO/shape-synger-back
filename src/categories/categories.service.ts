@@ -1,16 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
+
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { MongoRepository } from 'typeorm';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { UserEntity } from '../users/entities/user.entity';
+
+import { CategoryEntity } from './entities/category.entity';
+import {
+  QueryResponse,
+  QueryStatusMessage,
+} from '../core/interface/GenericQueryRersponse';
 
 @Injectable()
 export class CategoriesService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(
+    @InjectRepository(CategoryEntity)
+    private categoryEntityRepository: MongoRepository<CategoryEntity>,
+  ) {}
+  async create(createCategoryDto: CreateCategoryDto) {
+
+    const existingCategory = await this.categoryEntityRepository.findOne({
+      where: { value: createCategoryDto.value },
+    });
+    if (existingCategory) {
+      throw new ConflictException('Category with this value already exists');
+    }
+
+    return await this.categoryEntityRepository
+      .save({
+        ...createCategoryDto,
+        created_at: new Date(),
+      })
+      .then(
+        (value) =>
+          ({
+            message: QueryStatusMessage.DATA_SAVED_SUCCESSFULLY,
+            code: 200,
+          }) as QueryResponse,
+      );
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    return await this.categoryEntityRepository.find()
   }
 
   findOne(id: number) {
