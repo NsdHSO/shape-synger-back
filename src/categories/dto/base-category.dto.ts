@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export class BaseCategoryDto {
-  @ApiProperty()
   @PrimaryGeneratedColumn()
   id?: string;
   /**

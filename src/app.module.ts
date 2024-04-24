@@ -11,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { BreedModule } from './breed/breed.module';
 import { BreedSizeModule } from './breed-size/breed-size.module';
 import { ActivityLevelModule } from './activity-level/activity-level.module';
+import { OverviewModule } from './overview/overview.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ActivityLevelModule } from './activity-level/activity-level.module';
     BreedModule,
     BreedSizeModule,
     ActivityLevelModule,
+    OverviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
