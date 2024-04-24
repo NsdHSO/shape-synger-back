@@ -9,13 +9,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 
 import { CreateActivityLevelDto } from './dto/create-activity-level.dto';
-import { UpdateActivityLevelDto } from './dto/update-activity-level.dto';
 import {
   QueryResponse,
   QueryStatusMessage,
 } from '../core/interface/GenericQueryRersponse';
 import { ActivityLevelEntity } from './entities/activity-level.entity';
-import { ActivityLevelType } from '../core/type';
 
 @Injectable()
 export class ActivityLevelService {
@@ -29,7 +27,10 @@ export class ActivityLevelService {
       typeof createActivityLevelDto.level !== 'string' ||
       !['low', 'medium', 'high'].includes(createActivityLevelDto.level)
     ) {
-      throw new BadRequestException('Invalid activity level', "'low', 'medium', 'high'");
+      throw new BadRequestException(
+        'Invalid activity level',
+        "'low', 'medium', 'high'",
+      );
     }
     const baseActivityLevelDto =
       await this.activityLevelDtoMongoRepository.findOne({

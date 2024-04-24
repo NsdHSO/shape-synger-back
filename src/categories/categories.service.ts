@@ -6,7 +6,6 @@ import { MongoRepository } from 'typeorm';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { UserEntity } from '../users/entities/user.entity';
 
 import { CategoryEntity } from './entities/category.entity';
 import {
@@ -21,7 +20,6 @@ export class CategoriesService {
     private categoryEntityRepository: MongoRepository<CategoryEntity>,
   ) {}
   async create(createCategoryDto: CreateCategoryDto) {
-
     const existingCategory = await this.categoryEntityRepository.findOne({
       where: { value: createCategoryDto.value },
     });
@@ -44,7 +42,7 @@ export class CategoriesService {
   }
 
   async findAll() {
-    return await this.categoryEntityRepository.find()
+    return await this.categoryEntityRepository.find();
   }
 
   findOne(id: number) {

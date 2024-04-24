@@ -9,7 +9,6 @@ import { ActivityLevelEntity } from './entities/activity-level.entity';
 @Module({
   controllers: [ActivityLevelController],
   providers: [ActivityLevelService],
-  imports: [TypeOrmModule.forFeature([ActivityLevelEntity])]
+  imports: [TypeOrmModule.forFeature([ActivityLevelEntity])],
 })
-export class ActivityLevelModule {
-}
+export class ActivityLevelModule {}

@@ -1,11 +1,14 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { MongoRepository } from 'typeorm';
 
 import { CreateBreedSizeDto } from './dto/create-breed-size.dto';
-import { UpdateBreedSizeDto } from './dto/update-breed-size.dto';
 
 import { BreedSizeEntity } from './entities/breed-size.entity';
 import {
@@ -21,12 +24,14 @@ export class BreedSizeService {
   ) {}
 
   async create(createBreedSizeDto: CreateBreedSizeDto) {
-
     if (
       typeof createBreedSizeDto.size !== 'string' ||
       !['small', 'medium', 'large'].includes(createBreedSizeDto.size)
     ) {
-      throw new BadRequestException('Invalid activity level', "'small', 'medium', 'large'");
+      throw new BadRequestException(
+        'Invalid activity level',
+        "'small', 'medium', 'large'",
+      );
     }
     const breedSizeEntity = await this.breedSizeEntityMongoRepository.findOne({
       where: { size: createBreedSizeDto.size },
@@ -54,7 +59,9 @@ export class BreedSizeService {
   }
 
   async findOne(id: number) {
-    return await this.breedSizeEntityMongoRepository.findOne({where: { id: id }});
+    return await this.breedSizeEntityMongoRepository.findOne({
+      where: { id: id },
+    });
   }
 
   remove(id: number) {

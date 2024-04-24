@@ -1,18 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { ActivityLevelService } from './activity-level.service';
 import { CreateActivityLevelDto } from './dto/create-activity-level.dto';
-import { UpdateActivityLevelDto } from './dto/update-activity-level.dto';
 
 @Controller('activity-level')
 @ApiBearerAuth()

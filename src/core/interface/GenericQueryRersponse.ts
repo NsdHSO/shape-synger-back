@@ -1,4 +1,3 @@
-
 export enum QueryStatusMessage {
   QUERY_EXECUTED_SUCCESSFULLY = 'Query executed successfully',
   DATA_SAVED_SUCCESSFULLY = 'Data saved successfully',
@@ -13,5 +12,5 @@ export enum ErrorMessage {
 }
 export interface QueryResponse {
   message: QueryStatusMessage | ErrorMessage;
-  code: number
+  code: number;
 }

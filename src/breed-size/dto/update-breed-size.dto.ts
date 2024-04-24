@@ -1,6 +1,8 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateBreedSizeDto } from './create-breed-size.dto';
+
 import { UpdateDateColumn } from 'typeorm';
+
+import { CreateBreedSizeDto } from './create-breed-size.dto';
 
 export class UpdateBreedSizeDto extends PartialType(CreateBreedSizeDto) {
   @UpdateDateColumn()

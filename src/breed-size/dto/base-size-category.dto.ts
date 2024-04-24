@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
+
 import { SizeType } from '../../core/type';
 
 export class BaseSizeCategoryDto {

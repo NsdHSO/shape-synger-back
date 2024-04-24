@@ -10,6 +10,7 @@ import { Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
 import { IS_PUBLIC_KEY } from '../public-key/public-strategy';
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(

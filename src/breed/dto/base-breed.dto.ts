@@ -1,9 +1,10 @@
 import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { ApiProperty } from '@nestjs/swagger';
+
 import { BreedSizeEntity } from '../../breed-size/entities/breed-size.entity';
 import { ActivityLevelEntity } from '../../activity-level/entities/activity-level.entity';
 import { ActivityLevelType, SizeType } from '../../core/type';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseBreedDto {
   @PrimaryGeneratedColumn()
