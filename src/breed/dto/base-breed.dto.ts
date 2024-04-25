@@ -22,6 +22,10 @@ export class BaseBreedDto {
   @ApiProperty({ description: 'id of base size', required: true })
   origin: string;
 
+  @Column({nullable: true})
+  @ApiProperty({ description: 'id of base size', required: true })
+  age: number;
+
   @ManyToOne(() => BreedSizeEntity)
   @ApiProperty({ description: 'id of base size', required: true })
   @JoinColumn({ name: 'breed_size_id' })
