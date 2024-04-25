@@ -18,6 +18,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  
+  app.enableCors({
+    origin: [/^http:\/\/localhost:\d+$/, /^https:\/\/localhost:\d+$/]
+  })
   await app.listen(3000);
 
   if (module.hot) {
