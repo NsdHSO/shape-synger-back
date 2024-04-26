@@ -17,7 +17,7 @@ const corsOptionsDelegate = function (req, callback) {
 };
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors(corsOptionsDelegate);
 
   const config = new DocumentBuilder()
     .setTitle('Farm')

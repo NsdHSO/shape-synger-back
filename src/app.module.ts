@@ -1,17 +1,18 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { CategoriesModule } from './categories/categories.module';
-import { BreedModule } from './breed/breed.module';
-import { BreedSizeModule } from './breed-size/breed-size.module';
 import { ActivityLevelModule } from './activity-level/activity-level.module';
+import { AuthModule } from './auth/auth.module';
+import { BreedSizeModule } from './breed-size/breed-size.module';
+import { BreedModule } from './breed/breed.module';
+import { CategoriesModule } from './categories/categories.module';
+import { LoggingMiddlewareService } from './logging-middleware/logging-middleware.service';
 import { OverviewModule } from './overview/overview.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -35,6 +36,10 @@ import { OverviewModule } from './overview/overview.module';
     OverviewModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LoggingMiddlewareService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+  consumer.apply(LoggingMiddlewareService).forRoutes('*');
+  }
+}
