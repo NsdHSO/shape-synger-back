@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import { cors } from 'cors';
 import { AppModule } from './app.module';
-
 declare const module: any;
 const allowlist = ['http://localhost:4200','https://localhost'];
 const corsOptionsDelegate = function (req, callback) {
@@ -27,8 +27,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.enableCors(corsOptionsDelegate);
-
+  app.use(cors())
   await app.listen(3000);
 
   if (module.hot) {
