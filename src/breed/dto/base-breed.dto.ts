@@ -22,7 +22,7 @@ export class BaseBreedDto {
   @ApiProperty({ description: 'id of base size', required: true })
   origin: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @ApiProperty({ description: 'id of base size', required: true })
   age: number;
 

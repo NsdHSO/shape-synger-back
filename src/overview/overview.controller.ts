@@ -8,8 +8,7 @@ import { OverviewService } from './overview.service';
 @ApiTags('overview')
 @Controller('overview')
 export class OverviewController {
-  constructor(private readonly overviewService: OverviewService) {
-  }
+  constructor(private readonly overviewService: OverviewService) {}
 
   @Get()
   findAll() {

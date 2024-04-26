@@ -40,6 +40,6 @@ import { UsersModule } from './users/users.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-  consumer.apply(LoggingMiddlewareService).forRoutes('*');
+    consumer.apply(LoggingMiddlewareService).forRoutes('*');
   }
 }

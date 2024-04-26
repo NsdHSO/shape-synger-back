@@ -1,2 +1,1 @@
-export class OverviewEntity {
-}
+export class OverviewEntity {}

@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { LoggingMiddlewareService } from './logging-middleware.service';
 
 describe('LoggingMiddlewareService', () => {
