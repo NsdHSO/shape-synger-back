@@ -17,6 +17,7 @@ const corsOptionsDelegate = function (req, callback) {
 };
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Farm')
@@ -27,7 +28,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.enableCors();
 
   await app.listen(3000);
 
