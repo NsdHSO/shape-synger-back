@@ -8,11 +8,7 @@ import { CreateBreedDto } from './dto/create-breed.dto';
 import { UpdateBreedDto } from './dto/update-breed.dto';
 
 import { BreedEntity } from './entities/breed.entity';
-import {
-  ErrorMessage,
-  QueryResponse,
-  QueryStatusMessage,
-} from '../core/interface/GenericQueryRersponse';
+import { ErrorMessage, QueryResponse, QueryStatusMessage } from '../core/interface/GenericQueryRersponse';
 import { levelStadium, sizeStadium } from '../core/array';
 
 @Injectable()
@@ -29,7 +25,7 @@ export class BreedService {
         created_at: new Date(),
       })
       .then(
-        (value) =>
+        () =>
           ({
             message: QueryStatusMessage.DATA_SAVED_SUCCESSFULLY,
             code: 200,

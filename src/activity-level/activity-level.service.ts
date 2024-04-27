@@ -1,18 +1,11 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { MongoRepository } from 'typeorm';
 
 import { CreateActivityLevelDto } from './dto/create-activity-level.dto';
-import {
-  QueryResponse,
-  QueryStatusMessage,
-} from '../core/interface/GenericQueryRersponse';
+import { QueryResponse, QueryStatusMessage } from '../core/interface/GenericQueryRersponse';
 import { ActivityLevelEntity } from './entities/activity-level.entity';
 
 @Injectable()
@@ -48,7 +41,7 @@ export class ActivityLevelService {
         created_at: new Date(),
       })
       .then(
-        (value) =>
+        () =>
           ({
             message: QueryStatusMessage.DATA_SAVED_SUCCESSFULLY,
             code: 200,

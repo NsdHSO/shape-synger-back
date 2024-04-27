@@ -8,10 +8,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 import { CategoryEntity } from './entities/category.entity';
-import {
-  QueryResponse,
-  QueryStatusMessage,
-} from '../core/interface/GenericQueryRersponse';
+import { QueryResponse, QueryStatusMessage } from '../core/interface/GenericQueryRersponse';
 
 @Injectable()
 export class CategoriesService {
@@ -33,7 +30,7 @@ export class CategoriesService {
         created_at: new Date(),
       })
       .then(
-        (value) =>
+        () =>
           ({
             message: QueryStatusMessage.DATA_SAVED_SUCCESSFULLY,
             code: 200,
@@ -50,7 +47,7 @@ export class CategoriesService {
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+    return `This action updates a #${id} category ${updateCategoryDto}`;
   }
 
   remove(id: number) {

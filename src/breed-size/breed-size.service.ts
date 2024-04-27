@@ -1,26 +1,19 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { MongoRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateBreedSizeDto } from './dto/create-breed-size.dto';
 
 import { BreedSizeEntity } from './entities/breed-size.entity';
-import {
-  QueryResponse,
-  QueryStatusMessage,
-} from '../core/interface/GenericQueryRersponse';
+import { QueryResponse, QueryStatusMessage } from '../core/interface/GenericQueryRersponse';
 
 @Injectable()
 export class BreedSizeService {
   constructor(
     @InjectRepository(BreedSizeEntity)
-    private breedSizeEntityMongoRepository: MongoRepository<BreedSizeEntity>,
+    private breedSizeEntityMongoRepository: Repository<BreedSizeEntity>,
   ) {}
 
   async create(createBreedSizeDto: CreateBreedSizeDto) {
@@ -46,7 +39,7 @@ export class BreedSizeService {
         created_at: new Date(),
       })
       .then(
-        (value) =>
+        () =>
           ({
             message: QueryStatusMessage.DATA_SAVED_SUCCESSFULLY,
             code: 200,
