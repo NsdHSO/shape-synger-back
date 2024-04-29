@@ -29,7 +29,7 @@ const corsOptionsDelegate = function (req, callback) {
 };
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+app.use(cors({origin:'http://localhost:4200'}))
   const config = new DocumentBuilder()
     .setTitle('Farm')
     .setDescription('The farm description')
@@ -49,3 +49,7 @@ async function bootstrap() {
   }
 }
 bootstrap();
+function cors(arg0: { origin: string; }): any {
+  throw new Error('Function not implemented.');
+}
+
