@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 declare const module: any;
-const allowlist = ['http://localhost:4200','https://localhost'];
+const allowlist = ['http://localhost:4200','https://shape-synger'];
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
