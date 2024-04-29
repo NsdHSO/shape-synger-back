@@ -16,7 +16,7 @@ const corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions); // callback expects two parameters: error and options
 };
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true});
 
   const config = new DocumentBuilder()
     .setTitle('Farm')
