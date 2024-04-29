@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-
 declare const module: any;
 const allowlist = ['http://localhost:4200', 'https://localhost'];
 const corsOptionsDelegate = function (req, callback) {
@@ -29,7 +28,6 @@ const corsOptionsDelegate = function (req, callback) {
 };
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-app.use(cors({origin:'http://localhost:4200'}))
   const config = new DocumentBuilder()
     .setTitle('Farm')
     .setDescription('The farm description')
@@ -49,7 +47,5 @@ app.use(cors({origin:'http://localhost:4200'}))
   }
 }
 bootstrap();
-function cors(arg0: { origin: string; }): any {
-  throw new Error('Function not implemented.');
-}
+
 
