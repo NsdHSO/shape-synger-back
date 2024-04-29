@@ -23,7 +23,7 @@ import { UsersModule } from './users/users.module';
         type: 'postgres',
         url: configService.get('DB_URL'),
         synchronize: configService.get('DB_SYNCHRONIZE'),
-        entities: ['./dist/**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/../**/*.entity.js']
       }),
     }),
     ConfigModule.forRoot(),
