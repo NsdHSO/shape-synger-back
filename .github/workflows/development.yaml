@@ -1,4 +1,4 @@
-name: 🚦 ESLint and Test
+name: 🚦    ESLint and Test
 
 on:
 - push

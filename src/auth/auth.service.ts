@@ -9,15 +9,15 @@ import { JwtService } from '@nestjs/jwt';
 import { CACHE_MANAGER } from '@nestjs/common/cache';
 import { ConfigService } from '@nestjs/config';
 
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { v4 as uuid, validate as uuidValidate } from 'uuid';
 import { Cache } from 'cache-manager';
+import { Repository } from 'typeorm';
+import { v4 as uuid, validate as uuidValidate } from 'uuid';
 
 import { sign } from 'jsonwebtoken';
 
-import { UserEntity } from '../users/entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 
 export enum Provider {
@@ -46,7 +46,7 @@ export class AuthService {
       const jwt: string = req?.user?.jwt;
       res.set('authorization', jwt);
 
-      if (jwt) res.redirect('http://localhost:4200/login/succes/' + jwt);
+      if (jwt) res.redirect('http://localhost:4200?' + jwt);
       else res.redirect('http://localhost:4200/login/failure');
     }
   }
