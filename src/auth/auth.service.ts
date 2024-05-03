@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { CACHE_MANAGER } from '@nestjs/common/cache';
@@ -9,9 +14,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuid, validate as uuidValidate } from 'uuid';
 import { Cache } from 'cache-manager';
 
+import { sign } from 'jsonwebtoken';
+
 import { UserEntity } from '../users/entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../users/users.service';
+
+export enum Provider {
+  GOOGLE = 'google',
+}
 
 @Injectable()
 export class AuthService {
@@ -32,9 +43,9 @@ export class AuthService {
       10000,
     );
     {
-      // handles the Google OAuth2 callback
-      console.log(req.user);
       const jwt: string = req?.user?.jwt;
+      res.set('authorization', jwt);
+
       if (jwt) res.redirect('http://localhost:4200/login/succes/' + jwt);
       else res.redirect('http://localhost:4200/login/failure');
     }
@@ -79,6 +90,32 @@ export class AuthService {
   async signUp(payload: CreateUserDto) {
     await this.usersService.create(payload);
     return { message: 'User was created successfully.' };
+  }
+
+  async validateOAuthLogin(
+    thirdPartyId: string,
+    provider: Provider,
+  ): Promise<string> {
+    try {
+      // You can add some registration logic here,
+      // to register the user using their thirdPartyId (in this case their googleId)
+      // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
+
+      // if (!user)
+      // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
+
+      const payload = {
+        thirdPartyId,
+        provider,
+      };
+
+      const jwt: string = sign(payload, this.configService.get('JWT_SECRET'), {
+        expiresIn: 3600,
+      });
+      return jwt;
+    } catch (err) {
+      throw new InternalServerErrorException('validateOAuthLogin', err.message);
+    }
   }
 
   private async handleDataBaseUser() {

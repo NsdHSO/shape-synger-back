@@ -60,4 +60,11 @@ export class AuthController {
   googleLogin(req) {
     return this.authService.googleLogin(req);
   }
+
+  @Get('protected')
+  @UseGuards(AuthGuard('jwt'))
+  protectedResource()
+  {
+    return 'JWT is working!';
+  }
 }
