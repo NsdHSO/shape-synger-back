@@ -4,20 +4,20 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { APP_GUARD } from '@nestjs/core';
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { CacheModule } from '@nestjs/common/cache';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 
 import { UserEntity } from '../users/entities/user.entity';
-
-import { AuthGuard } from './guard/auth.guard';
+import { GoogleStrategyService } from './strategies/google-strategy/google-strategy.service';
 
 @Module({
   imports: [
+    CacheModule.register({ ttl: 10000, max: 10000000 }),
     UsersModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
@@ -34,13 +34,8 @@ import { AuthGuard } from './guard/auth.guard';
     ConfigModule.forRoot(),
   ],
   controllers: [AuthController],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    AuthService,
-  ],
+  providers: [GoogleStrategyService, AuthService],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule {
+}

@@ -1,10 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards, } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, } from '@nestjs/swagger';
+
+import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { BaseUser } from '../dto/base-user.dto';
@@ -47,5 +44,20 @@ export class AuthController {
       updatedAt: new Date(),
     };
     return this.authService.signUp(payload as any);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req, @Res() response) {
+    return this.authService.googleRedirect(req, response);
+  }
+
+  @Post('login')
+  googleLogin(req) {
+    return this.authService.googleLogin(req);
   }
 }
