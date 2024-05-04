@@ -11,8 +11,7 @@ import { OverviewService } from './overview.service';
 @UseGuards(AuthGuard('jwt'))
 @Controller('overview')
 export class OverviewController {
-  constructor(private readonly overviewService: OverviewService) {
-  }
+  constructor(private readonly overviewService: OverviewService) {}
 
   @Get()
   findAll() {
