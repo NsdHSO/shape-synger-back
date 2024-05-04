@@ -22,7 +22,6 @@ export class JwtStrategyService extends PassportStrategy(Strategy, 'jwt') {
     };
 
     super({
-      clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       ignoreExpiration: false,
       secretOrKey: configService.get<string>('JWT_SECRET'),
       jwtFromRequest: extractJwtFromCookie,
