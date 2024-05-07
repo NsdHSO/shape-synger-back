@@ -1,12 +1,27 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards, } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthGuard } from '@nestjs/passport';
 
-import { AuthService } from './auth.service';
 import { BaseUser } from '../dto/base-user.dto';
-import { Public } from './public-key/public-strategy';
 import { UserEntity } from '../users/entities/user.entity';
+import { AuthService } from './auth.service';
+import { Public } from './public-key/public-strategy';
 
 @Controller('auth')
 @ApiBearerAuth()
@@ -46,25 +61,25 @@ export class AuthController {
     return this.authService.signUp(payload as any);
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
-
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req, @Res() response) {
     return this.authService.googleRedirect(req, response);
   }
 
-  @Post('login')
-  googleLogin(req) {
-    return this.authService.googleLogin(req);
+  @Post('google/login')
+  async googleLogin(@Req() req, @Res() response) {
+    let returnedValue;
+    returnedValue = await this.authService.googleLogin(req);
+
+    return response
+      .send({ data: btoa(JSON.stringify(returnedValue)) })
+      .status(HttpStatus.OK);
   }
 
   @Get('protected')
   @UseGuards(AuthGuard('jwt'))
-  protectedResource()
-  {
+  protectedResource() {
     return 'JWT is working!';
   }
 }

@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
 import { Repository } from 'typeorm';
-import { v4 as uuid, validate as uuidValidate } from 'uuid';
+import { validate as uuidValidate } from 'uuid';
 
 import { sign } from 'jsonwebtoken';
 
@@ -36,18 +36,14 @@ export class AuthService {
   ) {}
 
   async googleRedirect(req, res) {
-    const userTempId = uuid();
+    const userTempId = req.query['state'];
     await this.cacheManager.set(
-      this.configService.get('CACHE_GOOGLE_PREFIX'),
-      userTempId,
+      this.configService.get('CACHE_GOOGLE_PREFIX') + userTempId,
+      req.user,
       10000,
     );
     {
-      const jwt: string = req?.user?.jwt;
-      res.set('authorization', jwt);
-
-      if (jwt) res.redirect('http://localhost:4200?' + jwt);
-      else res.redirect('http://localhost:4200/login/failure');
+      res.send('<script>window.close()</script>');
     }
   }
 
@@ -56,10 +52,9 @@ export class AuthService {
   }
 
   public async googleLogin(req) {
-    console.log(req);
     const authorization = req.get('Authorization');
     if (!authorization) {
-      throw new Error('Method not implemented.');
+      throw new UnauthorizedException();
     }
 
     const userTempId = authorization.replace('Bearer ', '');
