@@ -18,7 +18,6 @@ COPY . .
 # Creates a "dist" folder with the production build
 RUN npm run build
 
-COPY dist ./dist
 
 # Expose the port on which the app will run
 EXPOSE 3000
