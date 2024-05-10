@@ -1,26 +1,46 @@
-# Base image
-FROM node:16-alpine
+FROM node:18.3-alpine As development
 
-# Create app directory
-WORKDIR /usr/src/app
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-
+WORKDIR  /usr/src/app
 
 COPY package*.json ./
+COPY npm-shrinkwrap.json ./
+COPY .npmrc ./
 
-# Install app dependencies
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm \
+    npm install --global npm@latest
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
 
-# Bundle app source
-COPY . .
+COPY --chown=node:node . .
 
-# Creates a "dist" folder with the production build
+CMD ["npm", "start"]
+
+FROM development as builder
+
 RUN npm run build
 
+FROM node:18-alpine as production
 
-# Expose the port on which the app will run
-EXPOSE 3000
+ARG APP_ENV=development
+ENV NODE_ENV=${APP_ENV}
 
-# Start the server using the production build
-CMD ["node", "dist/main.js"]
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY npm-shrinkwrap.json ./
+COPY .npmrc ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm install --global npm@latest
+RUN mkdir -p ./node_modules && chown -R node:node ./node_modules
+
+USER node:node
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --omit=optional
+
+COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
+
+EXPOSE 3002
+
+CMD ["node", "dist/main"]
