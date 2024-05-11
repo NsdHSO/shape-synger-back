@@ -41,6 +41,6 @@ RUN --mount=type=cache,target=/root/.npm \
 
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
 
-EXPOSE 3002/tcp
+EXPOSE 3000/tcp
 
 CMD ["node", "dist/main"]
