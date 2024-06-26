@@ -15,6 +15,6 @@ export class OverviewController {
 
   @Get()
   findAll() {
-    return this.overviewService.findAll().then(c => btoa(JSON.stringify(c)))
+    return this.overviewService.findAll().then((c) => btoa(JSON.stringify(c)));
   }
 }

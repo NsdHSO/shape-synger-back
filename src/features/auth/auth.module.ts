@@ -12,9 +12,9 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../../users/users.module';
 
-import { UserEntity } from '../users/entities/user.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 import { GoogleStrategyService } from './strategies/google-strategy/google-strategy.service';
 import { JwtStrategyService } from './strategies/jwt-strategy/jwt-strategy.service';
 

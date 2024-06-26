@@ -5,13 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { ActivityLevelModule } from './activity-level/activity-level.module';
-import { AuthModule } from './auth/auth.module';
-import { BreedSizeModule } from './breed-size/breed-size.module';
-import { BreedModule } from './breed/breed.module';
-import { CategoriesModule } from './categories/categories.module';
-import { LoggingMiddlewareService } from './logging-middleware/logging-middleware.service';
-import { OverviewModule } from './overview/overview.module';
+import { AuthModule } from './features/auth/auth.module';
+import { LoggingMiddlewareService } from './features/logging-middleware/logging-middleware.service';
+import { OverviewModule } from './features/overview/overview.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -29,10 +25,6 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot(),
     AuthModule,
     UsersModule,
-    CategoriesModule,
-    BreedModule,
-    BreedSizeModule,
-    ActivityLevelModule,
     OverviewModule,
   ],
   controllers: [AppController],

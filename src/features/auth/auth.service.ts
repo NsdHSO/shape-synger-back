@@ -11,9 +11,9 @@ import { validate as uuidValidate } from 'uuid';
 
 import { sign } from 'jsonwebtoken';
 
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UserEntity } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../../dto/create-user.dto';
+import { UserEntity } from '../../users/entities/user.entity';
+import { UsersService } from '../../users/users.service';
 
 export enum Provider {
   GOOGLE = 'google',
