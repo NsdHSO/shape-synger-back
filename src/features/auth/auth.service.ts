@@ -1,18 +1,15 @@
 import { Inject, Injectable, InternalServerErrorException, UnauthorizedException, } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
 
 import { CACHE_MANAGER } from '@nestjs/common/cache';
 import { ConfigService } from '@nestjs/config';
-
-import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
-import { Repository } from 'typeorm';
 import { validate as uuidValidate } from 'uuid';
 
 import { sign } from 'jsonwebtoken';
 
 import { CreateUserDto } from '../../dto/create-user.dto';
-import { UserEntity } from '../../users/entities/user.entity';
 import { UsersService } from '../../users/users.service';
 
 export enum Provider {
@@ -24,8 +21,6 @@ export class AuthService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly configService: ConfigService,
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
     private usersService: UsersService,
   ) {}
@@ -66,19 +61,25 @@ export class AuthService {
     return googleUser;
   }
 
-  async signIn(email, pass) {
+  async signIn(email: string, password: string) {
     const user = await this.usersService.findOneBy(email);
-    if (user?.password !== pass) {
-      throw new UnauthorizedException();
+    const passwordVerified = await argon2.verify(user.password, password);
+    if (!user || !passwordVerified) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { sub: user.id, email: user.email };
-    return {
-      jwt: await this.jwtService.signAsync(payload),
-    };
-  }
 
+    const payload = { sub: user.id, email: user.email, userName: user.username };
+    const jwt = await this.jwtService.signAsync(payload);
+    return { jwt };
+  }
   async signUp(payload: CreateUserDto) {
-    await this.usersService.create(payload);
+    const hashedPassword = await argon2.hash(payload.password);
+
+    const payloadToBeSaved = {
+      ...payload,
+      password: hashedPassword,
+    };
+    await this.usersService.create(payloadToBeSaved);
     return { message: 'User was created successfully.' };
   }
 

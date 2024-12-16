@@ -28,7 +28,7 @@ import { JwtStrategyService } from './strategies/jwt-strategy/jwt-strategy.servi
         global: true,
         secret: configService.get('JWT_SECRET'),
         signOptions: {
-          expiresIn: '1d',
+          expiresIn: '15m',
         },
       }),
       imports: [ConfigModule],

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+
 import * as process from 'node:process';
 
 declare const module: any;
@@ -12,15 +13,15 @@ const allowlist = [
   'ionic://localhost',
 ];
 const corsOptionsDelegate = function (req, callback) {
-  console.log(req.header('Origin'));
   let corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+    corsOptions = { origin: true };
   } else {
-    corsOptions = { origin: true }; // disable CORS for this request
+    corsOptions = { origin: true };
   }
-  callback(null, corsOptions); // callback expects two parameters: error and options
+  callback(null, corsOptions);
 };
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
@@ -34,7 +35,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.enableCors(corsOptionsDelegate);
-
+  if (process.env.PORT) {
+    // eslint-disable-next-line
+    console.log('Server was started:', process.env.PORT);
+  } else {
+    // eslint-disable-next-line
+    console.log('Server started:', 3000);
+  }
   await app.listen(process.env.PORT || 3000), '0.0.0.0';
 
   if (module.hot) {
@@ -42,4 +49,5 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 }
+
 bootstrap();

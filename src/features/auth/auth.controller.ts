@@ -1,6 +1,16 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards, } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, } from '@nestjs/swagger';
-
 import { AuthGuard } from '@nestjs/passport';
 
 import { BaseUser } from '../../dto/base-user.dto';
@@ -12,7 +22,8 @@ import { Public } from './public-key/public-strategy';
 @ApiBearerAuth()
 @ApiTags('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+  }
 
   @Public()
   @HttpCode(HttpStatus.OK)
@@ -21,6 +32,10 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'The record found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input',
   })
   signIn(@Body() signInDto: UserEntity) {
     return this.authService.signIn(signInDto.email, signInDto.password);
@@ -35,15 +50,21 @@ export class AuthController {
     description: 'The record found',
     type: [BaseUser],
   })
-  signUp(@Body() signUpDto: UserEntity) {
-    const payload = {
-      username: signUpDto.username,
-      email: signUpDto.email,
-      password: signUpDto.password,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    return this.authService.signUp(payload as any);
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input',
+  })
+  async signUp(@Body() signUpDto: UserEntity) {
+    // Validation is handled by the DTO decorators
+    try {
+      const payload = {
+        ...signUpDto,
+        updatedAt: new Date(),
+      };
+      return await this.authService.signUp(payload);
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Signup failed');
+    }
   }
 
   @Get('google/callback')
